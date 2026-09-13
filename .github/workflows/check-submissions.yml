@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 19 * * *'   # Runs 19:00 UTC = 00:00 AM PKT (UTC+5)
+                            # Deadline (13 Sept 2026 23:59:59 UTC) is checked inside check.py per-commit
 
 jobs:
   check:
@@ -21,5 +22,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add submissions.csv
-          git commit -m "Auto update submission status" || exit 0
+          git commit -m "Auto update submission status (with deadline check)" || exit 0
           git push
