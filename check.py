@@ -1,6 +1,6 @@
 import re
-import itertools
 from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 import requests
 
@@ -10,30 +10,16 @@ DEADLINE_STR = DEADLINE.strftime('%d-%b-%Y %H:%M UTC')
 
 df = pd.read_csv('submissions.csv')
 
-BRANCHES = ["main", "master"]
+# Folders we consider plausible -- if a student used a different casing for the
+# folder itself (e.g. "Docs" instead of "docs"), we still catch it, since each
+# is a distinct real path in the git tree.
+FOLDER_CANDIDATES = ["docs", "Docs", "DOCS", "doc", "Doc", "DOC", ""]  # "" = repo root
 
-# ---------------------------------------------------------------------------
-# Build every REALISTIC filename + folder variant a student might have used.
-# (We deliberately avoid letter-by-letter random casing like "sPrInT_1.md" --
-#  that explodes into thousands of combinations for no real-world benefit and
-#  would blow through GitHub's API rate limit. Instead we cover every way a
-#  human actually tends to type it.)
-# ---------------------------------------------------------------------------
-WORD_CASES = ["sprint", "Sprint", "SPRINT"]
-SEPARATORS = ["_", "-", ""]
-NUMBER_FORMATS = ["1", "01"]
-EXTENSIONS = [".md", ".MD"]
+# Case-insensitive pattern matching the filename itself, covering every
+# realistic spelling: sprint/Sprint/SPRINT, _/-/none, 1/01, .md/.MD
+FILENAME_PATTERN = re.compile(r"^sprint[-_]?0?1\.md$", re.IGNORECASE)
 
-FILENAMES = {
-    f"{word}{sep}{num}{ext}"
-    for word, sep, num, ext in itertools.product(WORD_CASES, SEPARATORS, NUMBER_FORMATS, EXTENSIONS)
-}
-
-FOLDER_CASES = ["docs", "Docs", "DOCS", "doc", "Doc", "DOC"]
-FOLDERS = [f"{f}/" for f in FOLDER_CASES] + [""]  # "" = file sits directly in repo root, no folder
-
-CANDIDATE_PATHS = sorted({f"{folder}{name}" for folder in FOLDERS for name in FILENAMES})
-TOTAL_COMBINATIONS = len(CANDIDATE_PATHS) * len(BRANCHES)
+SESSION = requests.Session()
 
 
 def parse_github_repo(url):
@@ -63,7 +49,7 @@ def get_last_commit_date(owner, repo, path, branch):
     api_url = f"https://api.github.com/repos/{owner}/{repo}/commits"
     params = {"path": path, "sha": branch, "per_page": 1}
     try:
-        r = requests.get(api_url, params=params, timeout=8)
+        r = SESSION.get(api_url, params=params, timeout=10)
     except requests.RequestException as e:
         return None, f"Network error while fetching commit history: {e}"
 
@@ -83,16 +69,16 @@ def get_last_commit_date(owner, repo, path, branch):
 
 
 def check_submission(repo_url):
-    """Returns (Status, Reason)."""
+    """Returns (Status, Reason). Uses directory-listing instead of guessing raw URLs -- far fewer requests."""
     parsed = parse_github_repo(repo_url)
     if not parsed:
         return "Rejected ❌", f"Invalid GitHub repo URL format: '{repo_url}'. Could not extract owner/repo from the link."
 
     owner, repo = parsed
 
-    repo_api_url = f"https://api.github.com/repos/{owner}/{repo}"
+    # Step 1: verify repo exists and get its default branch in one call
     try:
-        repo_check = requests.get(repo_api_url, timeout=8)
+        repo_check = SESSION.get(f"https://api.github.com/repos/{owner}/{repo}", timeout=10)
     except requests.RequestException as e:
         return "Rejected ❌", f"Network error while verifying repository '{owner}/{repo}': {e}"
 
@@ -103,44 +89,69 @@ def check_submission(repo_url):
     if repo_check.status_code != 200:
         return "Rejected ❌", f"GitHub API returned unexpected status {repo_check.status_code} while verifying repository '{owner}/{repo}'."
 
-    for branch in BRANCHES:
-        for path in CANDIDATE_PATHS:
-            raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
-            try:
-                r = requests.get(raw_url, timeout=6)
-            except requests.RequestException:
-                continue
+    default_branch = repo_check.json().get("default_branch", "main")
 
-            if r.status_code == 200 and len(r.text.strip()) > 0:
-                commit_date, err = get_last_commit_date(owner, repo, path, branch)
+    # Step 2: list each candidate folder ONCE via the Contents API and pattern-match filenames inside it
+    # (This replaces guessing 500+ raw URLs -- only ~7 requests per repo now.)
+    for folder in FOLDER_CANDIDATES:
+        contents_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{folder}"
+        try:
+            r = SESSION.get(contents_url, params={"ref": default_branch}, timeout=10)
+        except requests.RequestException:
+            continue
+
+        if r.status_code != 200:
+            continue  # folder doesn't exist under this exact casing -- try the next candidate
+
+        try:
+            items = r.json()
+        except ValueError:
+            continue
+        if not isinstance(items, list):
+            continue  # this path pointed to a file, not a folder -- skip
+
+        for item in items:
+            if item.get("type") == "file" and FILENAME_PATTERN.match(item.get("name", "")):
+                found_path = f"{folder}/{item['name']}" if folder else item["name"]
+                commit_date, err = get_last_commit_date(owner, repo, found_path, default_branch)
 
                 if commit_date is None:
-                    return "Rejected ❌", f"File found at '{branch}/{path}' but its commit date could not be verified. {err}"
+                    return "Rejected ❌", f"File found at '{default_branch}/{found_path}' but its commit date could not be verified. {err}"
 
                 commit_str = commit_date.strftime('%d-%b-%Y %H:%M UTC')
 
                 if commit_date <= DEADLINE:
-                    return "Accepted ✅", f"File found at '{branch}/{path}', last committed {commit_str} — on time (deadline was {DEADLINE_STR})."
+                    return "Accepted ✅", f"File found at '{default_branch}/{found_path}', last committed {commit_str} — on time (deadline was {DEADLINE_STR})."
                 else:
                     late_by = format_timedelta(commit_date - DEADLINE)
                     return "Rejected ❌", (
-                        f"File found at '{branch}/{path}' but last committed {commit_str}, "
+                        f"File found at '{default_branch}/{found_path}' but last committed {commit_str}, "
                         f"which is {late_by} after the deadline ({DEADLINE_STR}). Late submission."
                     )
 
     return "Rejected ❌", (
-        f"No submission file found. Checked {TOTAL_COMBINATIONS} combinations of filename "
-        f"(sprint/Sprint/SPRINT, _/-/none, 1/01, .md/.MD), folder (docs/Docs/DOCS/doc/Doc/DOC/root), "
-        f"and branch (main/master) — none existed in '{owner}/{repo}'."
+        f"No submission file found. Checked folders (docs/Docs/DOCS/doc/Doc/DOC/root) on branch "
+        f"'{default_branch}' in '{owner}/{repo}' for any filename matching sprint[-_]?1.md (case-insensitive)."
     )
 
 
-results = df['RepoLink'].apply(
-    lambda url: check_submission(url) if str(url).startswith('http')
-    else ("Rejected ❌", "RepoLink is missing or not a valid URL.")
-)
-df['Status'] = results.apply(lambda x: x[0])
-df['Reason'] = results.apply(lambda x: x[1])
+def process_row(index, repo_url):
+    if not str(repo_url).startswith('http'):
+        return index, "Rejected ❌", "RepoLink is missing or not a valid URL."
+    status, reason = check_submission(repo_url)
+    return index, status, reason
+
+
+# Run checks in parallel across students -- this is the main speed fix.
+results = {}
+with ThreadPoolExecutor(max_workers=10) as executor:
+    futures = [executor.submit(process_row, idx, row['RepoLink']) for idx, row in df.iterrows()]
+    for future in as_completed(futures):
+        idx, status, reason = future.result()
+        results[idx] = (status, reason)
+
+df['Status'] = df.index.map(lambda i: results[i][0])
+df['Reason'] = df.index.map(lambda i: results[i][1])
 
 df.to_csv('submissions.csv', index=False)
 print(df[['Name', 'RollNo', 'Status', 'Reason']].to_string(index=False))
