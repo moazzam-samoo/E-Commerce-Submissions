@@ -1,4 +1,6 @@
+import os
 import re
+import time
 from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
@@ -10,16 +12,38 @@ DEADLINE_STR = DEADLINE.strftime('%d-%b-%Y %H:%M UTC')
 
 df = pd.read_csv('submissions.csv')
 
-# Folders we consider plausible -- if a student used a different casing for the
-# folder itself (e.g. "Docs" instead of "docs"), we still catch it, since each
-# is a distinct real path in the git tree.
+# Folders we consider plausible for the submission file to live in.
 FOLDER_CANDIDATES = ["docs", "Docs", "DOCS", "doc", "Doc", "DOC", ""]  # "" = repo root
 
-# Case-insensitive pattern matching the filename itself, covering every
-# realistic spelling: sprint/Sprint/SPRINT, _/-/none, 1/01, .md/.MD
+# Case-insensitive pattern matching the filename itself
 FILENAME_PATTERN = re.compile(r"^sprint[-_]?0?1\.md$", re.IGNORECASE)
 
+# GitHub Actions automatically provides GITHUB_TOKEN in every workflow run.
+# Using it raises the API rate limit from 60/hour to 5000/hour -- no manual setup needed.
+TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+
 SESSION = requests.Session()
+if TOKEN:
+    SESSION.headers.update({"Authorization": f"token {TOKEN}"})
+
+
+def request_with_retry(url, params=None, timeout=10, max_retries=4):
+    """GET with retry/backoff so transient rate-limit hits don't wrongly fail a student."""
+    last_response = None
+    for attempt in range(max_retries):
+        try:
+            r = SESSION.get(url, params=params, timeout=timeout)
+        except requests.RequestException:
+            time.sleep(1.5 * (attempt + 1))
+            continue
+
+        last_response = r
+        if r.status_code == 403 and "rate limit" in r.text.lower():
+            if attempt < max_retries - 1:
+                time.sleep(3 * (attempt + 1))  # back off and try again
+                continue
+        return r
+    return last_response
 
 
 def parse_github_repo(url):
@@ -47,14 +71,12 @@ def format_timedelta(td):
 
 def get_last_commit_date(owner, repo, path, branch):
     api_url = f"https://api.github.com/repos/{owner}/{repo}/commits"
-    params = {"path": path, "sha": branch, "per_page": 1}
-    try:
-        r = SESSION.get(api_url, params=params, timeout=10)
-    except requests.RequestException as e:
-        return None, f"Network error while fetching commit history: {e}"
+    r = request_with_retry(api_url, params={"path": path, "sha": branch, "per_page": 1})
 
+    if r is None:
+        return None, "Network error while fetching commit history (no response after retries)."
     if r.status_code == 403:
-        return None, "GitHub API rate limit exceeded while checking commit date — try again later or add an auth token."
+        return None, "GitHub API rate limit exceeded while checking commit date, even after retries."
     if r.status_code != 200:
         return None, f"GitHub API returned status {r.status_code} while fetching commit history."
 
@@ -69,46 +91,39 @@ def get_last_commit_date(owner, repo, path, branch):
 
 
 def check_submission(repo_url):
-    """Returns (Status, Reason). Uses directory-listing instead of guessing raw URLs -- far fewer requests."""
+    """Returns (Status, Reason)."""
     parsed = parse_github_repo(repo_url)
     if not parsed:
         return "Rejected ❌", f"Invalid GitHub repo URL format: '{repo_url}'. Could not extract owner/repo from the link."
 
     owner, repo = parsed
 
-    # Step 1: verify repo exists and get its default branch in one call
-    try:
-        repo_check = SESSION.get(f"https://api.github.com/repos/{owner}/{repo}", timeout=10)
-    except requests.RequestException as e:
-        return "Rejected ❌", f"Network error while verifying repository '{owner}/{repo}': {e}"
-
+    repo_check = request_with_retry(f"https://api.github.com/repos/{owner}/{repo}")
+    if repo_check is None:
+        return "Rejected ❌", f"Network error while verifying repository '{owner}/{repo}' (no response after retries)."
     if repo_check.status_code == 404:
         return "Rejected ❌", f"Repository '{owner}/{repo}' not found on GitHub — it may be private, deleted, renamed, or the link contains a typo."
     if repo_check.status_code == 403:
-        return "Rejected ❌", "GitHub API rate limit exceeded while verifying repository — try again later or add an auth token."
+        return "Rejected ❌", "GitHub API rate limit exceeded while verifying repository, even after retries."
     if repo_check.status_code != 200:
         return "Rejected ❌", f"GitHub API returned unexpected status {repo_check.status_code} while verifying repository '{owner}/{repo}'."
 
     default_branch = repo_check.json().get("default_branch", "main")
 
-    # Step 2: list each candidate folder ONCE via the Contents API and pattern-match filenames inside it
-    # (This replaces guessing 500+ raw URLs -- only ~7 requests per repo now.)
+    # Search every candidate folder (including repo root) for a matching filename.
     for folder in FOLDER_CANDIDATES:
         contents_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{folder}"
-        try:
-            r = SESSION.get(contents_url, params={"ref": default_branch}, timeout=10)
-        except requests.RequestException:
-            continue
+        r = request_with_retry(contents_url, params={"ref": default_branch})
 
-        if r.status_code != 200:
-            continue  # folder doesn't exist under this exact casing -- try the next candidate
+        if r is None or r.status_code != 200:
+            continue  # this folder doesn't exist under this casing -- try the next candidate
 
         try:
             items = r.json()
         except ValueError:
             continue
         if not isinstance(items, list):
-            continue  # this path pointed to a file, not a folder -- skip
+            continue
 
         for item in items:
             if item.get("type") == "file" and FILENAME_PATTERN.match(item.get("name", "")):
@@ -142,9 +157,11 @@ def process_row(index, repo_url):
     return index, status, reason
 
 
-# Run checks in parallel across students -- this is the main speed fix.
+# Moderate concurrency -- fast, but low enough to avoid GitHub's secondary abuse-detection limits.
+MAX_WORKERS = 5
+
 results = {}
-with ThreadPoolExecutor(max_workers=10) as executor:
+with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
     futures = [executor.submit(process_row, idx, row['RepoLink']) for idx, row in df.iterrows()]
     for future in as_completed(futures):
         idx, status, reason = future.result()
@@ -155,3 +172,5 @@ df['Reason'] = df.index.map(lambda i: results[i][1])
 
 df.to_csv('submissions.csv', index=False)
 print(df[['Name', 'RollNo', 'Status', 'Reason']].to_string(index=False))
+if not TOKEN:
+    print("\nWARNING: No GITHUB_TOKEN found in environment -- running at the 60 req/hour unauthenticated limit.")
