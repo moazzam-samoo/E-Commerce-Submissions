@@ -15,8 +15,11 @@ df = pd.read_csv('submissions.csv')
 # Folders we consider plausible for the submission file to live in.
 FOLDER_CANDIDATES = ["docs", "Docs", "DOCS", "doc", "Doc", "DOC", ""]  # "" = repo root
 
-# Case-insensitive pattern matching the filename itself
-FILENAME_PATTERN = re.compile(r"^sprint[-_]?0?1\.md$", re.IGNORECASE)
+# Filename just needs to contain "sprint" AND "1" ANYWHERE in the name (any
+# position, any text before/after/between), and end in .md. Case-insensitive.
+def is_submission_filename(name):
+    lname = name.lower()
+    return lname.endswith(".md") and "sprint" in lname and "1" in lname
 
 # GitHub Actions automatically provides GITHUB_TOKEN in every workflow run.
 # Using it raises the API rate limit from 60/hour to 5000/hour -- no manual setup needed.
@@ -126,7 +129,7 @@ def check_submission(repo_url):
             continue
 
         for item in items:
-            if item.get("type") == "file" and FILENAME_PATTERN.match(item.get("name", "")):
+            if item.get("type") == "file" and is_submission_filename(item.get("name", "")):
                 found_path = f"{folder}/{item['name']}" if folder else item["name"]
                 commit_date, err = get_last_commit_date(owner, repo, found_path, default_branch)
 
