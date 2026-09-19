@@ -1,0 +1,5 @@
+# This file makes every change in the repo require review/approval
+# from the listed owners before it can be merged into main.
+# GitHub automatically requests their review on any Pull Request.
+
+* @moazzam-samoo @rajesh-cs18
