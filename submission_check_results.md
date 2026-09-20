@@ -1,6 +1,6 @@
 # Sprint Submission Check Results
 
-- Checked at: 2026-09-19 15:33 UTC
+- Checked at: 2026-09-20 16:22 UTC
 - Source: `submissions_first_three_columns.csv`
 - Required file: `docs/SPRINT_1.md`
 - Validation: file exists at the exact path and contains non-whitespace content
@@ -36,7 +36,7 @@
 | Muhammad Bux | 2K23/CSM/83 | [https://github.com/mangriomuhammadbux333-lgtm/2k23-CSM-83](https://github.com/mangriomuhammadbux333-lgtm/2k23-CSM-83) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Saloni Rathore | 2K23/CSM/119 | [https://github.com/SaloniRathore123/ecommerce-2K23-CSM-119.git](https://github.com/SaloniRathore123/ecommerce-2K23-CSM-119.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Abdul Basit | 2K23/CSM/02 | [https://github.com/basit-kkp/ecommerce--2k23-CSM-02-](https://github.com/basit-kkp/ecommerce--2k23-CSM-02-) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Hasnain Nawaz | 2K23/CSM/46 | [https://github.com/HassnainNawazstar/E-commerce---2K23-CSM-46-](https://github.com/HassnainNawazstar/E-commerce---2K23-CSM-46-) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Hasnain Nawaz | 2K23/CSM/46 | [https://github.com/HassnainNawazstar/E-commerce---2K23-CSM-46-](https://github.com/HassnainNawazstar/E-commerce---2K23-CSM-46-) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Adil | 2K23/CSM/10 | [https://github.com/Adiljagsi/ecommerce--2K23-CSM-10-.git](https://github.com/Adiljagsi/ecommerce--2K23-CSM-10-.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Paras | 2K23/CSM/106 | [https://github.com/ParasJaipal/E-commorce-2K23-CSM-106](https://github.com/ParasJaipal/E-commorce-2K23-CSM-106) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Aisha Ali Khan | 2K23/CSM/12 | [https://github.com/Aisha031/ecommerce-2k23-CSM-12](https://github.com/Aisha031/ecommerce-2k23-CSM-12) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
@@ -47,10 +47,10 @@
 | Abrar Lund | 2K23/CSM/08 | [https://github.com/Lundabrar/SPRINT_1](https://github.com/Lundabrar/SPRINT_1) | Missing | Required file not found at `docs/SPRINT_1.md`. |
 | Muhammad Huzefa Khan | 2K23/CSM/87 | [https://github.com/huzaifakhan010/Ecommerce_2K23_CSM_87](https://github.com/huzaifakhan010/Ecommerce_2K23_CSM_87) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Syed Daniyal Hussain | 2K23/CSM/134 | [https://github.com/SyedDaniyalHussain/E-commerce-Store-BSCS-2K23-CSM-134](https://github.com/SyedDaniyalHussain/E-commerce-Store-BSCS-2K23-CSM-134) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Sameer | 2K23/CSM/120 | [https://github.com/Sameer-cs23/Hnoss-Atelier-Ecommerce](https://github.com/Sameer-cs23/Hnoss-Atelier-Ecommerce) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Sameer | 2K23/CSM/120 | [https://github.com/Sameer-cs23/Hnoss-Atelier-Ecommerce](https://github.com/Sameer-cs23/Hnoss-Atelier-Ecommerce) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Muhammad Hamza | 2K23/CSM/84 | [https://github.com/Hamza-the-Scientist/Ecommerce-2K23-CS-84.git](https://github.com/Hamza-the-Scientist/Ecommerce-2K23-CS-84.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Dilshad Hussain | 2K23/CSM/34 | [https://github.com/dilshadalibahalkani-oss/-E--Commerce-2K23-CSM-34](https://github.com/dilshadalibahalkani-oss/-E--Commerce-2K23-CSM-34) | Missing | Required file not found at `docs/SPRINT_1.md`. |
-| Iqtada Nabi Soomro | 2K23/CSM/49 | [https://github.com/iqtadanabi/E-commerce-2K23-CSM-49-.git](https://github.com/iqtadanabi/E-commerce-2K23-CSM-49-.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Iqtada Nabi Soomro | 2K23/CSM/49 | [https://github.com/iqtadanabi/E-commerce-2K23-CSM-49-.git](https://github.com/iqtadanabi/E-commerce-2K23-CSM-49-.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Alishba Zehra | 2K23/CSM/18 | [https://github.com/Alishba-Zehra/NestDecor-Ecommerce](https://github.com/Alishba-Zehra/NestDecor-Ecommerce) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Mehran | 2K23/CSM/73 | [https://github.com/mehrans12/ecommerce-2K23-CSM-73](https://github.com/mehrans12/ecommerce-2K23-CSM-73) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Kheeraj Das | 2K23/CSM/60 | [https://github.com/KheerajDas/e-commerce-2K23-CSM-60.git](https://github.com/KheerajDas/e-commerce-2K23-CSM-60.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
@@ -62,7 +62,7 @@
 | Mahnoor | 2K23/CSM/63 | [https://github.com/mahnoorfarooque941/ecommerce-2K23-CSM-63](https://github.com/mahnoorfarooque941/ecommerce-2K23-CSM-63) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Mahrukh | 2K23/CSM/65 | [https://github.com/MahrukhHumail/BloomingDale-E-Commerce.git](https://github.com/MahrukhHumail/BloomingDale-E-Commerce.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Bakhtawar | 2K23/CSM/30 | [https://github.com/Baqalashari/PageNest-Online-Bookstore](https://github.com/Baqalashari/PageNest-Online-Bookstore) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Seemab Javaid | 2K23/CSM/127 | [https://github.com/seemabarain/ecommerce-2K23-CSM-127](https://github.com/seemabarain/ecommerce-2K23-CSM-127) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Seemab Javaid | 2K23/CSM/127 | [https://github.com/seemabarain/ecommerce-2K23-CSM-127.git](https://github.com/seemabarain/ecommerce-2K23-CSM-127.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Kashaf Usman | 2K23/CSM/57 | [https://github.com/kashafusman222/ecommerce-2k23-CSM-57.git](https://github.com/kashafusman222/ecommerce-2k23-CSM-57.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Malik Areesha | 2K23/CSM/67 | [https://github.com/MalikAreesha/MalikAreesha-2K23-CSM-67](https://github.com/MalikAreesha/MalikAreesha-2K23-CSM-67) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Mazhar Laghari | 2K23/CSM/70 | [https://github.com/Mazharlaghari1/E-Commerce](https://github.com/Mazharlaghari1/E-Commerce) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
@@ -70,34 +70,36 @@
 | Muhammad Umer | 2K23/CSM/93 | [https://github.com/umerarain1122/Sprint-1.md](https://github.com/umerarain1122/Sprint-1.md) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Muhammad Shaheer Bhutto | 2K23/CSM/90 | [https://github.com/shaheerbhutto/E-Commerce-2k23-CSM-90](https://github.com/shaheerbhutto/E-Commerce-2k23-CSM-90) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Baber Saeed | 2K23/CSM/29 | [https://github.com/Babersaeed17/Ecommerce](https://github.com/Babersaeed17/Ecommerce) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Mushahid Hussain | 2K23/CSM/100 | [https://github.com/Mushahid-teewno/ecommerce-react-app.git](https://github.com/Mushahid-teewno/ecommerce-react-app.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Mushahid Hussain | 2K23/CSM/100 | [https://github.com/Mushahid-teewno/ecommerce-react-app.git](https://github.com/Mushahid-teewno/ecommerce-react-app.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Yasir Parveez | 2K23/CSM/146 | [https://github.com/Yasirpz/SoleVault](https://github.com/Yasirpz/SoleVault) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Ali Raza Kalhoro | 2K23/CSM/17 | [https://github.com/Ali-Raza-kalhoro/desire_scents.git](https://github.com/Ali-Raza-kalhoro/desire_scents.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Ali Raza Kalhoro | 2K23/CSM/17 | [https://github.com/Ali-Raza-kalhoro/desire_scents.git](https://github.com/Ali-Raza-kalhoro/desire_scents.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Fahad Ali | 2K23/CSM/36 | [https://github.com/chandiofahad/E-Commerce-2K23-CSM-36](https://github.com/chandiofahad/E-Commerce-2K23-CSM-36) | Missing | Required file not found at `docs/SPRINT_1.md`. |
 | Muhammad Hassan | 2K23/CSM/86 | [https://github.com/soomrohassan/ecommerce--2k23-csm-86-](https://github.com/soomrohassan/ecommerce--2k23-csm-86-) | Missing | Required file not found at `docs/SPRINT_1.md`. |
 | Muhammad Yahya | 2K23/CSM/95 | [https://github.com/SahitoMuhammadyahya/e-commerce.git](https://github.com/SahitoMuhammadyahya/e-commerce.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Abdul Rehman | 2K23/CSM/07 | [https://github.com/AbdulRehman-op/SoleX_e_commerece_website.git](https://github.com/AbdulRehman-op/SoleX_e_commerece_website.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Abdul Rehman | 2K23/CSM/07 | [https://github.com/AbdulRehman-op/SoleX_e_commerece_website.git](https://github.com/AbdulRehman-op/SoleX_e_commerece_website.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Govinda | 2K23/CSM/41 | [https://github.com/govindamalhii/ecommerce-2k23-CSM-41](https://github.com/govindamalhii/ecommerce-2k23-CSM-41) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Arqash | 2K23/CSM/22 | [https://github.com/arqash/ecommerce--2K23-CSM-22-](https://github.com/arqash/ecommerce--2K23-CSM-22-) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Maria Zulfiqar Ali | 2K23/CSM/68 | [https://github.com/mariazulfiqar/Sindhi-heritage-e-commerce.git](https://github.com/mariazulfiqar/Sindhi-heritage-e-commerce.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Maria Zulfiqar Ali | 2K23/CSM/68 | [https://github.com/mariazulfiqar/Sindhi-heritage-e-commerce.git](https://github.com/mariazulfiqar/Sindhi-heritage-e-commerce.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Uroosa Patoli | 2K25/TYCS/02 | [https://github.com/uroosapatoli5-ship-it/Sprint-1](https://github.com/uroosapatoli5-ship-it/Sprint-1) | Missing | Required file not found at `docs/SPRINT_1.md`. |
-| Mehak Ansari | 2K23/CSM/71 | [https://github.com/mehakqazi/e-commerce-2K23-CSM-71](https://github.com/mehakqazi/e-commerce-2K23-CSM-71) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Mehak Ansari | 2K23/CSM/71 | [https://github.com/mehakqazi/e-commerce-2K23-CSM-71](https://github.com/mehakqazi/e-commerce-2K23-CSM-71) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Laiba Salam | 2K23/CSM/61 | [https://github.com/Laibasalam/Ecommerce--2K23-CSM-61-](https://github.com/Laibasalam/Ecommerce--2K23-CSM-61-) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Awais Kokhar | 2K23/CSM/26 | [https://github.com/awais-mitho/E-Commerce-2K23-CSM-26.git](https://github.com/awais-mitho/E-Commerce-2K23-CSM-26.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Usaid Chandio | 2K23/CSM/143 | [https://github.com/usaid-khan-chandio/E-Commerce-2K23-CSM-143.git](https://github.com/usaid-khan-chandio/E-Commerce-2K23-CSM-143.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Maleeka | 2K23/CSM/66 | [https://github.com/Maleeka07/ecommerce-2k23-CSM-66.git](https://github.com/Maleeka07/ecommerce-2k23-CSM-66.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Syed Muhammad Hayat Shah | 2K23/CSM/135 | [https://github.com/7hayatshah/ecommerce-assignment.git](https://github.com/7hayatshah/ecommerce-assignment.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
-| Devi Bai | 2K23/CSM/33 | [https://github.com/khatridevi/ecommerce-33.git](https://github.com/khatridevi/ecommerce-33.git) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Syed Muhammad Hayat Shah | 2K23/CSM/135 | [https://github.com/7hayatshah/ecommerce-assignment.git](https://github.com/7hayatshah/ecommerce-assignment.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
+| Devi Bai | 2K23/CSM/33 | [https://github.com/khatridevi/ecommerce-33.git](https://github.com/khatridevi/ecommerce-33.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Faisal Rustamani | 2K23/CSM/37 | [https://github.com/faisalrustmani786-code/e-commerce-sdlc.git](https://github.com/faisalrustmani786-code/e-commerce-sdlc.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Ali Gohar Mallah | 2K23/CSM/15 | [https://github.com/mallah-gohar/E-commerce-2k23-csm-15-docs-SPRINT_1.md.git](https://github.com/mallah-gohar/E-commerce-2k23-csm-15-docs-SPRINT_1.md.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Aurangzeb Tayab | 2K23/CSM/24 | [https://github.com/2023-CSM-24/ecommerce-2023-CSM-24](https://github.com/2023-CSM-24/ecommerce-2023-CSM-24) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
-| Ruqaiya  | 2K23/CSM/113 | [https://github.com/ruqaiyadars/ecommerce-sprint-1](https://github.com/ruqaiyadars/ecommerce-sprint-1) | Missing | Required file not found at `docs/SPRINT_1.md`. |
+| Ruqaiya  | 2K23/CSM/113 | [https://github.com/ruqaiyadars/ruqayadars.git](https://github.com/ruqaiyadars/ruqayadars.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 | Neeraj Kumar | 2K23/CSM/103 | [https://github.com/neerajkmmm/ecommerce-2K23-CSM-103](https://github.com/neerajkmmm/ecommerce-2K23-CSM-103) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
+| Abdul Raheem | 2K23/CSM/06 | [https://github.com/abdulrah3m/freshcart-ecommerce.git](https://github.com/abdulrah3m/freshcart-ecommerce.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
+| Rizwan Hyder | 2K23/CSM/112 | [https://github.com/rizwanhyder-47/ecommerce-2K23-CSM-112.git](https://github.com/rizwanhyder-47/ecommerce-2K23-CSM-112.git) | Submitted | Found non-empty `docs/SPRINT_1.md` on branch `main`. |
 
 ## Summary
 
-- Total checked: 86
-- Submitted: 65
-- Missing: 21
+- Total checked: 88
+- Submitted: 79
+- Missing: 9
 - Invalid: 0
 - Errors: 0
